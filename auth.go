@@ -43,5 +43,6 @@ func GetAuthClient(username string, password string, server string) req.Client {
 		"PanelAuthorization": token,
 	}
 	client = client.SetCommonHeaders(authHeader)
+	client = client.DevMode()
 	return *client
 }

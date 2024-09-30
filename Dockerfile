@@ -11,7 +11,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o 1panel-rest .
 
 # 使用scratch基础镜像来创建一个最小的容器
-FROM scratch
+FROM alpine
 
 # 从builder阶段复制编译好的应用程序
 COPY --from=builder /app/1panel-rest /1panel-rest
@@ -20,4 +20,4 @@ COPY --from=builder /app/1panel-rest /1panel-rest
 EXPOSE 8080
 
 # 运行应用程序
-CMD ["/myapp"]
+CMD ["/1panel-rest"]

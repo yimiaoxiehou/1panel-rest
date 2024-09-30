@@ -11,7 +11,8 @@ func main() {
 	r := gin.Default()
 	r.Use(Handler)
 	r.POST("/redirect", postRedirect)
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+	r.POST("/save", saveFile)
+	r.Run(":8080") // 监听并在 0.0.0.0:8080 上启动服务
 }
 
 type PostRedirectBody struct {
@@ -23,6 +24,22 @@ type PostRedirectBody struct {
 	Path         string `json:"path"`
 	Target       string `json:"target"`
 	RedirectType int    `json:"redirectType"`
+}
+
+type SaveFileBody struct {
+	Server   string `json:"server"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Content  string `json:"content"`
+	Path     string `json:"path"`
+}
+
+func saveFile(c *gin.Context) {
+	var body SaveFileBody
+	if c.ShouldBind(&body) == nil {
+		client := GetAuthClient(body.Username, body.Password, body.Server)
+		SaveFile(&client, body.Content, body.Path)
+	}
 }
 
 func postRedirect(c *gin.Context) {
@@ -45,6 +62,7 @@ func UpsertRedirect(client *req.Client, domain string, name string, path string,
 	redirects := GetRedirects(client, website.ID)
 	for _, r := range redirects {
 		if r.Name == name {
+			r.Operate = "edit"
 			UpdateRedirects(client, r)
 		}
 	}
