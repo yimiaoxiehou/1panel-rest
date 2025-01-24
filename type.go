@@ -57,6 +57,27 @@ type Redirect struct {
 	Operate      string   `json:"operate,omitempty"`
 }
 
+type Proxy struct {
+	ID            int                    `json:"id"`
+	Operate       string                 `json:"operate" default:"edit"`
+	Enable        bool                   `json:"enable"`
+	Cache         bool                   `json:"cache"`
+	CacheTime     int                    `json:"cacheTime"`
+	CacheUnit     string                 `json:"cacheUnit"`
+	Name          string                 `json:"name"`
+	Modifier      string                 `json:"modifier"`
+	Match         string                 `json:"match"`
+	ProxyPass     string                 `json:"proxyPass"`
+	ProxyHost     string                 `json:"proxyHost"`
+	Replaces      map[string]interface{} `json:"replaces"`
+	ProxyProtocol string                 `json:"proxyProtocol"`
+	ProxyAddress  string                 `json:"proxyAddress"`
+	Content       string                 `json:"content"`
+	FilePath      string                 `json:"filePath"`
+	SNI           bool                   `json:"sni"`
+	ProxySSLName  string                 `json:"proxySSLName"`
+}
+
 type LoginPayload struct {
 	Name       string `json:"name"`
 	Password   string `json:"password"`
